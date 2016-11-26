@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct Table {
+    int message;
+    int lenth;
+    struct Table * Next;
+} Arr_Table;
+
+void Arr_Table_Insert(Arr_Table ** Graph, int message, int lenth);
+void Solve(Arr_Table ** Graph, int C1, int C2, int City_Number);
+
+int dist[510], Team[510], Max_Team[510], counter[510];
+bool Visited[510];
+int shortest_path = 0x7fffffff;
+
+int main(int argc, char * argv[]) {
+    int City_Number, Road_Number, C1, C2;
+    scanf("%d %d %d %d", &City_Number, &Road_Number, &C1, &C2);
+    Arr_Table ** Graph = (Arr_Table**)malloc(City_Number * sizeof(Arr_Table*));
+    memset(dist, 7, 510 * sizeof(int));
+    for (int i = 0; i < City_Number; ++i) {
+        scanf("%d", &Team[i]);
+        Graph[i] = NULL;
+    }
+    int a, b, lenth;
+    for (int i = 0; i < Road_Number; ++i) {
+        scanf("%d %d %d", &a, &b, &lenth);
+        Arr_Table_Insert(&Graph[a], b, lenth);
+        Arr_Table_Insert(&Graph[b], a, lenth);
+    }
+    //Push(C1);
+    counter[C1] = 1;
+    dist[C1] = 0;
+    Max_Team[C1] = Team[C1];
+    Solve(Graph, C1, C2, City_Number);
+    printf("%d %d", counter[C2], Max_Team[C2]);
+    return 0;
+}
+
+void Arr_Table_Insert(Arr_Table ** Graph, int message, int lenth) {
+    Arr_Table * temp = *Graph;
+    *Graph = (Arr_Table*)malloc(sizeof(Arr_Table));
+    (*Graph)->message = message;
+    (*Graph)->lenth = lenth;
+    (*Graph)->Next = temp;
+}
+
+void Solve(Arr_Table ** Graph, int C1, int C2, int City_Number) {
+	for (int i = 0; i < City_Number; ++i) {
+		int City = -1, dalao = 0x7fffffff;
+		for (int j = 0; j < City_Number; j++) {
+			if (Visited[j] == false && dist[j] < dalao) {
+				City = j;
+				dalao = dist[j];
+			}
+		}
+		if (City == -1) break;
+		Visited[City] = true;
+		for (Arr_Table * temp = Graph[City]; temp != NULL; temp = temp->Next) {
+			if (!Visited[temp->message]) {
+				if (dist[temp->message] > dist[City] + temp->lenth) {
+					Max_Team[temp->message] = Max_Team[City] + Team[temp->message];
+					counter[temp->message] = counter[City];
+					dist[temp->message] = dist[City] + temp->lenth;
+				}
+				else if (dist[temp->message] == dist[City] + temp->lenth) {
+					if (Max_Team[temp->message] < Max_Team[City] + Team[temp->message]) {
+						Max_Team[temp->message] = Max_Team[City] + Team[temp->message];
+					}
+					counter[temp->message] += counter[City];
+				}
+			}
+		}
+	}
+}
