@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char * argv[]){
+    int n;
+    int cen = 0;
+    int sum = 0;
+    scanf("%d", &n);
+    int n1;
+    while (n--){
+          scanf("%d", &n1);
+          if (n1 > cen){
+              sum += (n1 - cen) * 6 + 5;      
+          }
+          if (n1 < cen){
+              sum += (cen - n1) * 4 + 5;      
+          }
+          if (n1 == cen) sum += 5;
+          cen = n1;
+    }
+    printf("%d", sum);
+    return 0;    
+}
