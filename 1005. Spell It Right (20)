@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+char * kirby[10] = {"zero","one","two","three","four","five","six","seven","eight","nine"};
+
+void Print(int sum){
+	if (sum > 9){
+		Print(sum / 10);
+		printf(" %s", kirby[sum % 10]);
+	}
+	else{
+		printf("%s", kirby[sum]);
+	}
+}
+
+int main(int argc, char * argv[]) {
+	int a;
+	int sum = 0;
+	while (scanf("%1d", &a) != EOF) {
+		sum += a;
+	}
+	Print(sum);
+	return 0;
+}
