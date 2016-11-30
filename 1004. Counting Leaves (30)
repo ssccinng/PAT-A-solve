@@ -1,0 +1,48 @@
+#include <stdio.h> 
+#include <stdlib.h>
+#include <string.h>
+
+int main(int argc, char * argv[]) {
+	int N, M;
+	scanf("%d %d", &N, &M);
+	int node[N + 1];
+	int mark[N + 1];
+	memset(mark, 0, (N + 1) * sizeof(int));
+	for (int i = 0; i <= N; ++i) {;
+		node[i] = 0;
+	}
+	for (int i = 0; i < M; ++i) {
+		int Num, K;
+		scanf("%d %d", &Num, &K);
+		int note; 
+		for (int j = 0; j < K; ++j) {
+			scanf("%d", &note);
+			node[note] = Num; 
+		}
+	}
+	for (int i = 1; i <= N; ++i) {
+		mark[node[i]] = 1; 
+	} 
+	int k[N + 1];
+	memset(k, 0, (N + 1) * sizeof(int));
+	int max = 0; 
+	for (int i = 1; i <= N; ++i){
+		int cnt = 1; 
+		if (mark[i] == 0){
+			int t = i; 
+			while (node[t] != 0) {
+				t = node[t];
+				cnt++; 
+			}
+			if (cnt > max) {
+				max = cnt;
+			}
+			k[cnt]++;
+		} 
+	} 
+	printf("%d", k[1]); 
+	for (int i = 2; i <= max; ++i) {
+		 printf(" %d", k[i]); 
+	} 
+	return 0;
+}
