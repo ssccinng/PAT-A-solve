@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct xiang{
+     int mi;
+     double xi;        
+} poly;
+
+double kirby[1000100];
+
+int main(int argc, char * argv[]){
+    int N1, N2;
+    scanf("%d", &N1);
+    poly yi[N1];
+    int a;
+    double b;
+    for (int i = 0; i < N1; ++i){
+        scanf("%d %lf", &yi[i].mi, &yi[i].xi);
+    }
+    scanf("%d", &N2);
+    poly er[N2];
+    for (int i = 0; i < N2; ++i){
+        scanf("%d %lf", &er[i].mi, &er[i].xi);
+    }
+    double * kirby = (double*)malloc(1000100 * sizeof(double));
+    memset(kirby, 0, (1000100) * sizeof(double));
+    for (int i = 0; i < N1; ++i){
+        for (int j = 0; j < N2; ++j){
+            kirby[yi[i].mi + er[j].mi] += yi[i].xi * er[j].xi;
+        }    
+    }
+    int cnt = 0;
+    for (int i = 0; i < 1000100; ++i){
+        if (kirby[i]) ++cnt;    
+    }
+    printf("%d", cnt);
+    for (int i = 1000095; i >= 0; --i){
+        if (kirby[i]) printf(" %d %.1f", i, kirby[i]);
+    }
+    return 0;
+}
