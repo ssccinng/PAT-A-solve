@@ -1,0 +1,30 @@
+#include<stdio.h>
+  int main(){
+    int K;
+    scanf("%d",&K);
+    int kirby[K];
+    int begin,end;
+    int it = 0,ft = 0,st = 0;
+    int max = 0,sum = -1;
+    for (int i = 0;i < K;i++){
+      scanf("%d",&kirby[i]);
+      max += kirby[i];
+      if (max > sum){
+        sum = max;
+        ft = it;
+        st = i;
+      }
+      if (max < 0){
+        max = 0;
+        it = i + 1;
+      }
+    }
+    if (sum == 0){
+      printf("0 0 0");
+    }else if (sum < 0){
+      printf("0 %d %d",kirby[0],kirby[K - 1]);
+    }else{
+      printf("%d %d %d",sum,kirby[ft],kirby[st]);
+    }  
+    return 0;
+  } 
