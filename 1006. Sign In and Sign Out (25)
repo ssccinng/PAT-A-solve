@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct people{
+        char * message;
+        char * time;
+} kirby;
+
+int cmp(const void * a, const void * b){
+    kirby * c = (kirby*)a;
+    kirby * d = (kirby*)b;
+    return strcmp(c->time, d->time);
+}
+
+int main(int argc, char * argv[]){
+    int N;
+    scanf("%d", &N);
+    kirby begin[N];
+    kirby end[N];
+    for (int i = 0; i < N; ++i){
+        begin[i].time = (char*)malloc(100 * sizeof(char));
+        begin[i].message = (char*)malloc(100 * sizeof(char));
+        end[i].time = (char*)malloc(100 * sizeof(char));
+        end[i].message = (char*)malloc(100 * sizeof(char));
+        scanf("%s%s%s", begin[i].message, begin[i].time, end[i].time);
+        strcpy(end[i].message, begin[i].message);    
+    }
+    qsort(begin, N, sizeof(begin[0]), cmp);
+    qsort(end, N, sizeof(end[0]), cmp);
+    printf("%s %s", begin[0].message, end[N - 1].message);
+    return 0;
+}
