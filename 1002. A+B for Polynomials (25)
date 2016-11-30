@@ -1,0 +1,32 @@
+#include<stdio.h>
+  int main(){
+    int k;
+    int m;
+    double n1;
+    double mu[1001] = {0};
+    int cnt = 2;
+    while(cnt--){
+      scanf("%d",&k);
+      if(0 < k&&k <= 10){
+        while(k--){
+          scanf("%d %lf",&m,&n1);
+          if(n1 != 0&&m <= 1000){
+          mu[m] += n1;
+          }
+        }
+      }
+    }
+    int cnt1 = 0;
+    for(int i = 1000;0 <= i;i--){
+      if(mu[i]){
+      cnt1++;
+      }
+    }
+    printf("%d",cnt1);
+    for(int i = 1000;0 <= i;i--){
+      if(mu[i]){
+        printf(" %d %.1f",i,mu[i]);
+      }
+    }
+    return 0;
+  }
