@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <string.h>
+#include <algorithm>
+
+using namespace std;
+
+
+
+struct student {
+	char type;
+	int site;
+	int ymd;
+	int testee;
+	int score;
+	char cardnumber[20];
+}; 
+
+struct AA {
+	int cnt;
+	int site;
+};
+
+bool cmp1(const student &a, const student &b) {
+	if (a.score != b.score) return a.score > b.score;
+	else return strcmp(a.cardnumber, b.cardnumber) < 0;
+}
+
+bool cmp2(const AA &a, const AA &b) {
+	if (a.cnt != b.cnt) return a.cnt > b.cnt;
+	else return b.site > a.site;
+}
+
+int main (int argc, char * argv[]) {
+	int N, M;
+	scanf("%d %d\n", &N, &M);
+	student pat[10100]; 
+	for (int i = 0; i < N; ++i) {
+		scanf("%s %d", pat[i].cardnumber, &pat[i].score);
+		sscanf(pat[i].cardnumber, "%[A-Z]%3d%6d%3d", &pat[i].type, &pat[i].site, 
+		&pat[i].ymd, &pat[i].testee);
+		
+	}
+	
+	int type;
+	sort(pat, pat + N, cmp1);
+	for (int i = 1; i <= M; ++i) {
+		printf("Case %d: ", i);
+		scanf("%d ", &type);
+		printf("%d ", type);
+		if (type == 1) {
+			char op[2];
+			scanf("%s", op);
+			char nd = op[0];
+			printf("%c\n", nd);
+			int flag = 1;
+			for (int j = 0; j < N; ++j) {
+				if (pat[j].type == nd) printf("%s %d\n", pat[j].cardnumber, pat[j].score), flag = 0;
+			}
+			if (flag) printf("NA\n");
+		}	
+		else if (type == 2) {
+			int bh;
+			scanf("%d", &bh);
+			printf("%03d\n", bh);
+			int cnt = 0, all = 0; 
+			for (int j = 0; j < N; ++j) {
+				if (pat[j].site == bh) cnt++, all += pat[j].score;
+			}
+			if (cnt == 0) printf("NA\n");
+			else printf("%d %d\n", cnt, all);
+		}
+		else {
+			int bh;
+			scanf("%d", &bh);
+			printf("%06d\n", bh);
+			int tag[1000] = {};
+			for (int j = 0; j < N; ++j) {
+				if (pat[j].ymd == bh) tag[pat[j].site]++;
+			}
+			AA ice[1000] = {};
+			int idx = 0;
+			for (int j = 0; j < 1000; ++j) {
+				if (tag[j]) {
+					ice[idx].cnt = tag[j];
+					ice[idx++].site = j;
+				}
+			}
+			sort(ice, ice + idx, cmp2);
+			int flag = 1;
+			for (int j = 0; j < idx; ++j) {
+				printf("%d %d\n", ice[j].site, ice[j].cnt);
+				flag = 0;
+			} 
+			if (flag) printf("NA\n");
+		}
+	}
+	return 0;
+}
