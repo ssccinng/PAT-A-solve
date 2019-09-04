@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <algorithm>
+#include <list>
+
+using namespace std;
+
+
+int main(int argc, char * argv[]) {
+	int n, m;
+	scanf("%d %d", &n, &m);
+	list<int> ls[100000];
+	for (int i = 0; i < n; ++i) {
+		int a, b;
+		scanf("%d %d", &a, &b);
+		ls[a].push_back(b);
+		ls[b].push_back(a);
+	}
+	
+	for (int i = 0; i < m; ++i) {
+		int k;
+		scanf("%d", &k);
+		int flag = 1;
+		int ice[1010] = {};
+		int tag[100000] = {};
+		for (int j = 0; j < k; ++j) {
+			scanf("%d", ice + j);
+			for(int q : ls[ice[j]]) {
+				tag[q] = 1;
+			}
+		}
+		for (int j = 0; j < k; ++j) {
+			if (tag[ice[j]]) {
+				flag = 0; break;
+			}
+		}
+		printf(flag ? "Yes\n" : "No\n");
+	}
+	return 0;
+}
