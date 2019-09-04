@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int iswolf(int a) {
+	return a > 0 ? 1 : -1;
+}
+
+int main(int argc, char * argv[]) {
+	int N;
+	scanf("%d", &N);
+	
+	int sec[110];
+	for (int i = 1; i <= N; ++i) scanf("%d", sec + i);
+//	0 1 1 -1 -1 
+	for (int i = 1; i <= N; ++i) {
+		for (int j = i + 1; j <= N; ++j) {
+			int ans[110] = {};
+			int idx = 0;
+			for (int ice = 1; ice <= N; ++ice) {
+				int peo = abs(sec[ice]);
+				int chos = sec[ice] / abs(sec[ice]);
+				if (((peo == i || peo == j) && chos == 1) || ((peo != i && peo != j) && chos == -1)) {
+					ans[idx++] = ice;
+				}
+			}
+			if (idx == 2 && ( (ans[0] == i && ans[1] != j) || (ans[0] != i && ans[1] == j) ) ) {
+				printf("%d %d\n", i, j);
+				return 0;
+			}
+
+		}
+	}
+	
+	printf("No Solution");
+	return 0;
+} 
