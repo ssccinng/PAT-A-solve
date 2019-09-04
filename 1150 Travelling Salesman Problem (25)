@@ -1,0 +1,75 @@
+#include <stdio.h>
+
+int main(int argc,char * argv[]) {
+	int n, m;
+	scanf("%d %d", &n, &m);
+	int dist[210][210] = {};
+	for (int i = 0; i < 210; ++i) {
+		for (int j = 0; j < 210; ++j) {
+			dist[i][j] = dist[j][i] = -1;
+		}
+	}
+	for (int i = 0; i < m; ++i) {
+		int a, b, d;
+		scanf("%d %d %d", &a, &b, &d);
+		dist[a][b] = dist[b][a] = d;
+	}
+	int k;
+	scanf("%d", &k);
+	int minans = 999999999, minidx = 1;
+	for (int i = 1; i <= k; ++i) {
+		printf("Path %d: ", i);
+		int t;
+		scanf("%d", &t);
+		int sec[t + 2];
+		int tag[210] = {};
+		for (int ice = 0; ice < t; ++ice) {
+			scanf("%d", sec + ice);
+			tag[sec[ice]] = 1;
+		}
+		int dd = 0;
+		int flag = 0;
+		
+		for (int j = 1; j < t; ++j) {
+			if (dist[sec[j]][sec[j - 1]] == -1) {
+				printf("NA (Not a TS cycle)\n");
+				flag = 1;
+				break;
+			}
+			else {
+				dd += dist[sec[j]][sec[j - 1]];
+			}
+		}
+		
+		if (!flag) {
+			printf("%d ", dd);
+			for (int j = 1; j <= n; ++j) {
+				if (tag[j] == 0) {
+					flag = 1;
+					printf("(Not a TS cycle)\n");
+					break;
+				}
+			}
+		}
+		if (!flag) {
+			if (dd < minans) {
+				minans = dd;
+				minidx = i;
+			}
+			
+			if (sec[0] != sec[t - 1] || t <= n) {
+				printf("(Not a TS cycle)\n");
+			}
+			else {
+				if (t == n + 1) {
+					printf("(TS simple cycle)\n");
+				}
+				else {
+					printf("(TS cycle)\n");
+				}
+			}
+		}
+	}
+	printf("Shortest Dist(%d) = %d", minidx, minans);
+	return 0;
+}
